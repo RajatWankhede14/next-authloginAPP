@@ -12,7 +12,7 @@ const handler = async (req, res) => {
   const { fullName, phoneNumber, password } = req.body;
   const userExists = await User.findOne({ phoneNumber });
   if (userExists) {
-    return res.json(409).json({ error: "User already exists" });
+    return res.status(409).json({ error: "User already exists" });
   } else {
     const hashedPassword = await hash(password, 10);
     await User.create({
@@ -26,7 +26,7 @@ const handler = async (req, res) => {
           phoneNumber: data.phoneNumber,
           _id: data._id,
         };
-        res.status(201).json({ status: true, user });
+        res.status(201).json({ success: true, user });
       })
       .catch((error) => {
         res.json(error);
